@@ -41,13 +41,12 @@ const thoughtController = {
   createThought(req, res){
     Thought.create(req.body)
       .then(({ _id }) => {
-        return User.findOneAndUpdate(
-          { _id: body.userId },
+        var dbUserData = User.findOneAndUpdate(
+          { _id: req.body.userId },
           { $push: { thoughts: _id } },
           { new: true }
         );
-      })
-      .then((dbUserData) => {
+
         if (!dbUserData) {
           return res
             .status(404)
